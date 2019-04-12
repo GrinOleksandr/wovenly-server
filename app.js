@@ -25,6 +25,7 @@ app.get('/test', (req, res) => {
       resolve(newDataBase)
     })
   }
+  
   refactorDb()
     .then((newData) => {
       for (let i = 0; i < newData.result.data.length; i++) {
