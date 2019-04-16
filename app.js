@@ -3,6 +3,7 @@ const express = require('express'),
   config = require('./config'),
   path = require('path'),
   incomingDB = require('./DB/incomingDB.json'),
+  dataBase = require('./DB/db.json'),
   fs = require('fs'),
   downloadImage = require('image-downloader'),
   bodyParser = require('body-parser');
@@ -13,11 +14,11 @@ app.use('/thumbs', express.static('products/thumbs'));
 
 
 app.get('/', (req, res) => {
-  res.end('Hello from Sasha ;)')
+  res.end('Hello from woovenly server ;)')
 })
 
 
-// parse data
+// parse images nad thumbs and refactor database links of them.
 app.get('/parsedb', (req, res) => {
   function createNewDb() {
     return new Promise(function(resolve, reject) {
@@ -88,11 +89,10 @@ app.get('/parsedb', (req, res) => {
       console.error(err)
     })
 })
-
-
-
-
 // end parsing data
+
+
+
 
 app.listen(config.port)
 console.log(`*****Server running at localhost ${config.port}`)
