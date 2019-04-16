@@ -8,23 +8,12 @@ const express = require('express'),
   bodyParser = require('body-parser');
 
 // Serve static files
-app.use(express.static(path.join(__dirname, '/img')))
+app.use('/img', express.static('img'));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.end('Hello from Sasha ;)')
 })
-
-app
-
-
-
-
-
-
-
-
-
 
 
 // parse data
