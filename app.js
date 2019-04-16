@@ -6,7 +6,9 @@ const express = require('express'),
   dataBase = require('./DB/db.json'),
   fs = require('fs'),
   downloadImage = require('image-downloader'),
-  bodyParser = require('body-parser');
+  cors = require('cors');
+
+app.use(cors())
 
 // Serve static files
 app.use('/images', express.static('products/images'));
