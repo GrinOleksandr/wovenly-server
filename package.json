@@ -4,10 +4,10 @@
   "description": "this is training project for Oleksandr Grin",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "image-downloader": "^3.4.2",
-    "node-fetch": "^2.3.0",
     "nodejs": "^0.0.0"
   },
   "devDependencies": {
@@ -18,7 +18,7 @@
   "scripts": {
     "start": "node ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serv": "nodemon --inspect -w server/ server/app.js -L"
+    "serv": "nodemon --inspect  ./app.js -L"
   },
   "repository": {
     "type": "git",
