@@ -91,6 +91,13 @@ app.get('/parsedb', (req, res) => {
 })
 // end parsing data
 
+app.get('/getpopular', (req, res) => {
+  let incomingData = dataBase.result.data;
+  let popularProducts = [];
+
+  res.end('Hello from Sasha ;)')
+})
+
 
 
 
