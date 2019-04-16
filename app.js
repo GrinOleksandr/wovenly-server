@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 
 // parse data
-app.get('/test', (req, res) => {
+app.get('/parsedb', (req, res) => {
   function createNewDb() {
     return new Promise(function(resolve, reject) {
       let dataBase = incomingDB.result.data;
@@ -31,11 +31,13 @@ app.get('/test', (req, res) => {
   createNewDb()
     .then((newData) => {
       for (let i = 0; i < newData.result.data.length; i++) {
+        console.log('number', i)
         let imageUrl = newData.result.data[i].mediaCollection[0].url;
         let imageId =
           imageUrl.split('/')[3].slice(0, (imageUrl.split('/')[3].indexOf('?')));
+
         newData.result.data[i].mediaCollection[0].url =
-          `localhost:8000/img/${imageId}.jpg`
+          `${config.imagePath}${imageId}.jpg`
         downloadImage.image({
             url: imageUrl,
             dest: path.join(__dirname + `/img/${imageId}.jpg`)
@@ -51,12 +53,15 @@ app.get('/test', (req, res) => {
             console.error(err)
           })
       }
-      console.log('***********NEW DATA!!!!', newData)
-      fs.writeFile('db.json', newData, (err) => {
+      // console.log('***********NEW DATA!!!!', newData)
+      return newData
+
+    }).then((newData)=>{
+      fs.writeFile('./DB/db.json', JSON.stringify(newData), (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
       });
-      return newData
+      res.end("FINISHED!");
     })
     .catch((err) => {
       console.error(err)
