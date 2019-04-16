@@ -2,6 +2,6 @@
 
 module.exports = {
   // ip: '127.0.0.1',
-  imagePath:'http://localhost:8000/img/',
+  productStorage:'http://localhost:8000/',
   port: process.env.PORT || 8000
 }

@@ -8,8 +8,9 @@ const express = require('express'),
   bodyParser = require('body-parser');
 
 // Serve static files
-app.use('/img', express.static('img'));
-app.use(bodyParser.json());
+app.use('/images', express.static('products/images'));
+app.use('/thumbs', express.static('products/thumbs'));
+
 
 app.get('/', (req, res) => {
   res.end('Hello from Sasha ;)')
@@ -31,16 +32,15 @@ app.get('/parsedb', (req, res) => {
   createNewDb()
     .then((newData) => {
       for (let i = 0; i < newData.result.data.length; i++) {
-        console.log('number', i)
         let imageUrl = newData.result.data[i].mediaCollection[0].url;
         let imageId =
           imageUrl.split('/')[3].slice(0, (imageUrl.split('/')[3].indexOf('?')));
 
         newData.result.data[i].mediaCollection[0].url =
-          `${config.imagePath}${imageId}.jpg`
+          `${config.productStorage}images/${imageId}.jpg`;
         downloadImage.image({
             url: imageUrl,
-            dest: path.join(__dirname + `/img/${imageId}.jpg`)
+            dest: path.join(__dirname + `/products/images/${imageId}.jpg`)
           })
           .then(({
             filename,
@@ -52,6 +52,27 @@ app.get('/parsedb', (req, res) => {
           .catch((err) => {
             console.error(err)
           })
+
+          let thumbUrl = newData.result.data[i].mediaCollection[0].thumbUrl;
+          let thumbId =
+            thumbUrl.split('/')[3].slice(0, (thumbUrl.split('/')[3].indexOf('?')));
+          newData.result.data[i].mediaCollection[0].thumbUrl =
+            `${config.productStorage}thumbs/${thumbId}.jpg`;
+          downloadImage.image({
+              url: thumbUrl,
+              dest: path.join(__dirname + `/products/thumbs/${thumbId}.jpg`)
+            })
+            .then(({
+              filename,
+              image
+            }) => {
+              console.log('File saved to', filename);
+
+            })
+            .catch((err) => {
+              console.error(err)
+            })
+
       }
       // console.log('***********NEW DATA!!!!', newData)
       return newData

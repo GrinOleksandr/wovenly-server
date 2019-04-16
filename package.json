@@ -18,7 +18,7 @@
   "scripts": {
     "start": "node ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serv": "nodemon --inspect  ./app.js -L"
+    "serv": "nodemon --inspect  -w ./app.js ./app.js -L"
   },
   "repository": {
     "type": "git",
