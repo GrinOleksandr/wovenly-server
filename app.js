@@ -92,10 +92,38 @@ app.get('/parsedb', (req, res) => {
 // end parsing data
 
 app.get('/getpopular', (req, res) => {
-  let incomingData = dataBase.result.data;
-  let popularProducts = [];
+let incomingData = dataBase.result.data;
+let popularProducts = [];
+dataBase.result.data.forEach(function(item){
+let oldPriceFrom = item.pricing.price.amount;
+let oldPriceTo = item.pricing.listPrice.amount;
+let discountFrom = item.pricing.price.discount.value;
+let discountTo = item.pricing.listPrice.discount.value;
+let currencyFrom = item.pricing.price.currency;
+let currencyTo = item.pricing.listPrice.currency;
+let newColors = [];
+item.properties[1].options.forEach(function(color){
+  newColors.push(color.description);
+})
 
-  res.end('Hello from Sasha ;)')
+
+
+let newItem = {
+    name:item.title,
+    thumb:item.mediaCollection[0].thumbUrl,
+    oldPrice: '$100',
+    priceFrom: `${currencyFrom}${Math.round((oldPriceFrom - oldPriceFrom*discountFrom/100)/100)}`,
+    priceTo:`${currencyTo}${Math.round((oldPriceTo - oldPriceTo*discountTo/100)/100)}`,
+    colors:newColors
+  }
+  console.log(newItem);
+  popularProducts.push(newItem);
+})
+
+
+
+
+res.end(JSON.stringify(popularProducts))
 })
 
 
