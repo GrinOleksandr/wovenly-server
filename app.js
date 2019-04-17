@@ -105,7 +105,7 @@ let currencyFrom = item.pricing.price.currency;
 let currencyTo = item.pricing.listPrice.currency;
 let newColors = [];
 item.properties[1].options.forEach(function(color){
-  newColors.push(color.description);
+  newColors.push(color.value);
 })
 
 
