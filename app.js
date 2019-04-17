@@ -125,7 +125,8 @@ app.get('/getpopular', (req, res) => {
 
 
 
-let randomProducts = popularProducts.sort(() => .5 - Math.random()).slice(0,12);
+  let randomProducts = popularProducts.sort(() => .5 - Math.random())
+    .slice(0, 12);
   res.end(JSON.stringify(randomProducts))
 })
 
