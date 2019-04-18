@@ -41,6 +41,7 @@ app.get('/parsedb', (req, res) => {
 
         newData.result.data[i].mediaCollection[0].url =
           `${config.productStorage}images/${imageId}.jpg`;
+          console.log("NEW URL!! ",   `${config.productStorage}images/${imageId}.jpg`)
         downloadImage.image({
             url: imageUrl,
             dest: path.join(__dirname + `/products/images/${imageId}.jpg`)
