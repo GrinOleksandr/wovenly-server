@@ -141,6 +141,40 @@ app.get('/getstyles', (req, res) => {
 })
 
 
+app.get('/getnew', (req, res) => {
+  let incomingData = dataBase.result.data;
+  let newProducts = [];
+  dataBase.result.data.forEach(function(item) {
+    let oldPriceFrom = item.pricing.price.amount;
+    let oldPriceTo = item.pricing.listPrice.amount;
+    let discountFrom = item.pricing.price.discount.value;
+    let discountTo = item.pricing.listPrice.discount.value;
+    let currencyFrom = item.pricing.price.currency;
+    let currencyTo = item.pricing.listPrice.currency;
+    let newColors = [];
+    item.properties[1].options.forEach(function(color) {
+      newColors.push(color.value);
+    })
+
+    let newItem = {
+      name: item.title,
+      url: item.mediaCollection[0].url,
+      oldPrice: '$100',
+      priceFrom: `${currencyFrom}${Math.round((oldPriceFrom - oldPriceFrom*discountFrom/100)/100)}`,
+      priceTo: `${currencyTo}${Math.round((oldPriceTo - oldPriceTo*discountTo/100)/100)}`,
+      colors: newColors
+    }
+      newProducts.push(newItem);
+  })
+
+
+
+  let randomProducts = newProducts.sort(() => .5 - Math.random())
+    .slice(0, 12);
+  res.end(JSON.stringify(randomProducts))
+})
+
+
 
 app.listen(config.port)
 console.log(`*****Server running at localhost ${config.port}`)
