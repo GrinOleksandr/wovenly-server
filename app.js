@@ -130,6 +130,15 @@ app.get('/getpopular', (req, res) => {
   res.end(JSON.stringify(randomProducts))
 })
 
+app.get('/getstyles', (req, res) => {
+  let incomingData = dataBase.result.count_by_category.style;
+  let newData = [];
+  for(let key in incomingData){
+    newData.push(key)
+  }
+  console.log('Styles  ',JSON.stringify(newData));
+  res.end(JSON.stringify(newData))
+})
 
 
 
