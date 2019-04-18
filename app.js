@@ -40,8 +40,8 @@ app.get('/parsedb', (req, res) => {
           imageUrl.split('/')[3].slice(0, (imageUrl.split('/')[3].indexOf('?')));
 
         newData.result.data[i].mediaCollection[0].url =
-          `${config.productStorage}images/${imageId}.jpg`;
-          console.log("NEW URL!! ",   `${config.productStorage}images/${imageId}.jpg`)
+          `${config.productStorage}/images/${imageId}.jpg`;
+          console.log("NEW URL!! ",   `${config.productStorage}/images/${imageId}.jpg`)
         downloadImage.image({
             url: imageUrl,
             dest: path.join(__dirname + `/products/images/${imageId}.jpg`)
@@ -61,7 +61,7 @@ app.get('/parsedb', (req, res) => {
         let thumbId =
           thumbUrl.split('/')[3].slice(0, (thumbUrl.split('/')[3].indexOf('?')));
         newData.result.data[i].mediaCollection[0].thumbUrl =
-          `${config.productStorage}thumbs/${thumbId}.jpg`;
+          `${config.productStorage}/thumbs/${thumbId}.jpg`;
         downloadImage.image({
             url: thumbUrl,
             dest: path.join(__dirname + `/products/thumbs/${thumbId}.jpg`)
@@ -86,6 +86,7 @@ app.get('/parsedb', (req, res) => {
       fs.writeFile('./DB/db.json', JSON.stringify(newData), (err) => {
         if (err) throw err;
         console.log('The DataBase has been saved!');
+        console.log(newData)
       });
       res.end("FINISHED!");
     })
