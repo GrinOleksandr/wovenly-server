@@ -41,7 +41,6 @@ app.get('/parsedb', (req, res) => {
 
         newData.result.data[i].mediaCollection[0].url =
           `${config.productStorage}/images/${imageId}.jpg`;
-          console.log("NEW URL!! ",   `${config.productStorage}/images/${imageId}.jpg`)
         downloadImage.image({
             url: imageUrl,
             dest: path.join(__dirname + `/products/images/${imageId}.jpg`)
@@ -96,10 +95,22 @@ app.get('/parsedb', (req, res) => {
 })
 // end parsing data
 
-app.get('/getpopular', (req, res) => {
-  let incomingData = dataBase.result.data;
+
+app.get('/gethomepagedata', (req, res) => {
+  let homepageData = {
+    popular: getPopular(dataBase.result.data),
+    styles: getStyles(dataBase.result.count_by_category.style),
+    new: getNew(dataBase.result.data)
+  }
+  res.end(JSON.stringify(homepageData))
+})
+
+app.listen(config.port)
+console.log(`*****Server running at localhost ${config.port}`)
+
+function getPopular(incomingData) {
   let popularProducts = [];
-  dataBase.result.data.forEach(function(item) {
+  incomingData.forEach(function(item) {
     let oldPriceFrom = item.pricing.price.amount;
     let oldPriceTo = item.pricing.listPrice.amount;
     let discountFrom = item.pricing.price.discount.value;
@@ -111,8 +122,6 @@ app.get('/getpopular', (req, res) => {
       newColors.push(color.value);
     })
 
-
-
     let newItem = {
       name: item.title,
       thumb: item.mediaCollection[0].thumbUrl,
@@ -121,32 +130,25 @@ app.get('/getpopular', (req, res) => {
       priceTo: `${currencyTo}${Math.round((oldPriceTo - oldPriceTo*discountTo/100)/100)}`,
       colors: newColors
     }
-    console.log(newItem);
     popularProducts.push(newItem);
   })
 
-
-
   let randomProducts = popularProducts.sort(() => .5 - Math.random())
     .slice(0, 12);
-  res.end(JSON.stringify(randomProducts))
-})
+  return randomProducts
+}
 
-app.get('/getstyles', (req, res) => {
-  let incomingData = dataBase.result.count_by_category.style;
+function getStyles(incomingData) {
   let newData = [];
-  for(let key in incomingData){
+  for (let key in incomingData) {
     newData.push(key)
   }
-  console.log('Styles  ',JSON.stringify(newData));
-  res.end(JSON.stringify(newData))
-})
+  return newData
+}
 
-
-app.get('/getnew', (req, res) => {
-  let incomingData = dataBase.result.data;
+function getNew(incomingData) {
   let newProducts = [];
-  dataBase.result.data.forEach(function(item) {
+  incomingData.forEach(function(item) {
     let oldPriceFrom = item.pricing.price.amount;
     let oldPriceTo = item.pricing.listPrice.amount;
     let discountFrom = item.pricing.price.discount.value;
@@ -166,17 +168,10 @@ app.get('/getnew', (req, res) => {
       priceTo: `${currencyTo}${Math.round((oldPriceTo - oldPriceTo*discountTo/100)/100)}`,
       colors: newColors
     }
-      newProducts.push(newItem);
+    newProducts.push(newItem);
   })
-
-
 
   let randomProducts = newProducts.sort(() => .5 - Math.random())
     .slice(0, 12);
-  res.end(JSON.stringify(randomProducts))
-})
-
-
-
-app.listen(config.port)
-console.log(`*****Server running at localhost ${config.port}`)
+  return randomProducts
+}
