@@ -105,6 +105,108 @@ app.get('/gethomepagedata', (req, res) => {
   res.end(JSON.stringify(homepageData))
 })
 
+app.get('/getcatalogdata', (req, res) => {
+  let incomingData = dataBase.result.data,
+    allProducts = [],
+    totalProducts = 0,
+    sizes = [],
+    colors = [],
+    rooms = [],
+    prices = [],
+    materials = [],
+    constructions = [],
+    styles = [];
+
+  incomingData.forEach(function(item) {
+    let oldPriceFrom = item.pricing.price.amount,
+      oldPriceTo = item.pricing.listPrice.amount,
+      discountFrom = item.pricing.price.discount.value,
+      discountTo = item.pricing.listPrice.discount.value,
+      currencyFrom = item.pricing.price.currency,
+      currencyTo = item.pricing.listPrice.currency,
+      newColors = [];
+    item.properties[1].options.forEach(function(color) {
+      if (colors.indexOf(color.value) === -1) {
+        colors.push(color.value);
+      };
+      colors.push(color.value);
+      newColors.push(color.value);
+    });
+
+    let newItem = {
+      name: item.title,
+      thumb: item.mediaCollection[0].thumbUrl,
+      oldPrice: '$100',
+      priceFrom: `${currencyFrom}${Math.round((oldPriceFrom - oldPriceFrom*discountFrom/100)/100)}`,
+      priceTo: `${currencyTo}${Math.round((oldPriceTo - oldPriceTo*discountTo/100)/100)}`,
+      colors: newColors,
+      sizes: item.attributes.sizes,
+      rooms: item.attributes.rooms,
+      prices: item.attributes.sizes,
+      material: item.attributes.material,
+      construction: item.attributes.construction,
+      style: item.attributes.style
+    };
+
+    newItem.sizes.forEach((size) => {
+      if (sizes.indexOf(size) === -1) {
+        sizes.push(size)
+      }
+    });
+
+    newItem.rooms.forEach((room) => {
+      if (rooms.indexOf(room) === -1) {
+        rooms.push(room)
+      }
+    });
+
+    newItem.prices.forEach((price) => {
+      if (prices.indexOf(price) === -1) {
+        prices.push(price)
+      }
+    });
+
+    newItem.material.forEach((material) => {
+      if (materials.indexOf(material) === -1) {
+        materials.push(material)
+      }
+    });
+
+    newItem.construction.forEach((construction) => {
+      if (constructions.indexOf(construction) === -1) {
+        constructions.push(construction)
+      }
+    });
+
+    newItem.style.forEach((style) => {
+      if (styles.indexOf(style) === -1) {
+        styles.push(style)
+      }
+    });
+
+    totalProducts++;
+    allProducts.push(newItem);
+  })
+ let catalogData = {
+   products: allProducts,
+   totalProducts: totalProducts,
+   countByCategory:{
+     sizes:sizes,
+     colors:colors,
+     rooms:rooms,
+     prices:prices,
+     materials:materials,
+     constructions:constructions,
+     styles:styles
+     
+   }
+   
+ }
+
+  res.end(JSON.stringify(catalogData))
+})
+
+
 app.listen(config.port)
 console.log(`*****Server running at localhost ${config.port}`)
 
