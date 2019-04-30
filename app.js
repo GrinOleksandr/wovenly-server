@@ -187,21 +187,19 @@ app.get('/getcatalogdata', (req, res) => {
     totalProducts++;
     allProducts.push(newItem);
   })
- let catalogData = {
-   products: allProducts,
-   totalProducts: totalProducts,
-   countByCategory:{
-     sizes:sizes,
-     colors:colors,
-     rooms:rooms,
-     prices:prices,
-     materials:materials,
-     constructions:constructions,
-     styles:styles
-     
-   }
-   
- }
+  let catalogData = {
+    products: allProducts,
+    totalProducts: totalProducts,
+    countByCategory: {
+      size: sizes,
+      color: colors,
+      room: rooms,
+      price: prices,
+      material: materials,
+      construction: constructions,
+      style: styles
+    }
+  }
 
   res.end(JSON.stringify(catalogData))
 })
