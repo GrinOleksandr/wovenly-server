@@ -142,7 +142,7 @@ app.get('/getcatalogdata', (req, res) => {
       colors: newColors,
       sizes: item.attributes.sizes,
       rooms: item.attributes.rooms,
-      prices: item.attributes.sizes,
+      prices: item.attributes.prices,
       material: item.attributes.material,
       construction: item.attributes.construction,
       style: item.attributes.style
